@@ -3,6 +3,11 @@ Flask webservice packing into a Dockerfile
 
 git clone https://github.com/AndresHerrera/Proyecto-GestionOSWebservices.git
 
+## Video (asciinema)
+
+https://asciinema.org/a/QLPaAvjKPNz79U4eOlCOIFHBd
+
+
 ## Build a  Docker container
 
 $docker build -t oswebservice:latest .

@@ -57,7 +57,7 @@ def index():
     output +="<tr><td colspan=3 align=center><b>MISC</b></td></tr>"
     output +="<tr><td>GET</td><td>curl http://"+request_host+"/misc/uptime</td><td>Tell how long the system has been running.</td></tr>"
     output +="<tr><td>GET</td><td>curl http://"+request_host+"/misc/battery</td><td>Shows battery status and capacity.</td></tr>"
-    output +="<tr><td>POST</td><td>curl -i -H \"Content-Type: application/json\" -X POST -d '{\"name\":\"Docker\"}' http://"+request_host+"//misc/locate</td><td>Find files by name </td></tr>"
+    output +="<tr><td>POST</td><td>curl -i -H \"Content-Type: application/json\" -X POST -d '{\"name\":\"Docker\"}' http://"+request_host+"/misc/locate</td><td>Find files by name </td></tr>"
     output +="</table>"
     output +="</body></html>"
     return output
@@ -265,8 +265,9 @@ def misc(param):
         json=""
         if (param == "uptime"):
                 value = subprocess.check_output(['uptime','-p'])
-                json = jsonify({key: value,})
-        if (param == "battery"):
+                json = jsonify({key: value})
+        elif (param == "battery"):
+                value1 =  subprocess.check_output(['acpi','-V'])
                 acpi =  subprocess.Popen(['acpi', '-V'], stdout = subprocess.PIPE) 
                 grep = subprocess.Popen(['grep','Bat'], stdin = acpi.stdout, stdout = subprocess.PIPE)
                 awk = subprocess.Popen(['awk','{print substr($0,12,50)}'], stdin = grep.stdout, stdout = subprocess.PIPE)
@@ -276,7 +277,7 @@ def misc(param):
                 grep = subprocess.Popen(['grep','Bat'], stdin = acpi.stdout, stdout = subprocess.PIPE)
                 awk = subprocess.Popen(['awk','{print substr($0,12,50)}'], stdin = grep.stdout, stdout = subprocess.PIPE)
                 value2 = subprocess.check_output(['tail','-n' , '1'], stdin = awk.stdout  )
-                
+               
                 json = jsonify({'status': value1,  'capacity': value2})
         else:
                 return make_response(jsonify({'error': 'Bad parameter. Valid parameters: \'uptime\' '}), 404)
