@@ -294,7 +294,7 @@ def locate():
                 list = output.split('\n')
             except Exception:
                 list="Not found"
-        return jsonify({'results': list }) , 201      
+        return jsonify({'results': filter(None,  list )  }) , 201      
 #
 # Este es el punto donde arranca la ejecucion del programa
 #
