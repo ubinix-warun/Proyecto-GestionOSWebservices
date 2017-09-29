@@ -267,12 +267,10 @@ def misc(param):
                 value = subprocess.check_output(['uptime','-p'])
                 json = jsonify({key: value})
         elif (param == "battery"):
-                value1 =  subprocess.check_output(['acpi','-V'])
                 acpi =  subprocess.Popen(['acpi', '-V'], stdout = subprocess.PIPE) 
                 grep = subprocess.Popen(['grep','Bat'], stdin = acpi.stdout, stdout = subprocess.PIPE)
                 awk = subprocess.Popen(['awk','{print substr($0,12,50)}'], stdin = grep.stdout, stdout = subprocess.PIPE)
                 value1 = subprocess.check_output(['head','-n' , '1'], stdin = awk.stdout  ) 
-                
                 acpi =  subprocess.Popen(['acpi', '-V'], stdout = subprocess.PIPE) 
                 grep = subprocess.Popen(['grep','Bat'], stdin = acpi.stdout, stdout = subprocess.PIPE)
                 awk = subprocess.Popen(['awk','{print substr($0,12,50)}'], stdin = grep.stdout, stdout = subprocess.PIPE)
